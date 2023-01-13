@@ -5,10 +5,8 @@ import com.hello.entity.BookEntity;
 import com.hello.repository.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
-import java.util.Optional;
+import java.sql.SQLException;
 
 @Service
 public class BookService {
@@ -18,22 +16,31 @@ public class BookService {
         this.bookRepository = bookRepository;
     }
     @Transactional
-    public BookEntity createBook(Book book) {
-        return bookRepository.save(book.toEntity());
+    public Book createBook(Book book) {
+        Book result = bookRepository.save(book.toEntity()).toDto();
+        return result;
     }
 
     @Transactional
     public Book getBook(Long id) {
         BookEntity entity = bookRepository.findById(id)
-                .orElseThrow(()->new NullPointerException());
+                .orElseThrow(()->new NullPointerException("id에 맞는 값이 없습니다."));
         return entity.toDto();
     }
 
-//    @Transactional
-//    public Book updateBook(Book book,Long id){
-//        BookEntity entity = bookRepository.findById(id)
-//                .orElseThrow(()->new NullPointerException());
-//        entity=bookRepository.save(book.toEntity());
-//
-//    }
+    @Transactional
+    public BookEntity updateBook(Book book,Long id){
+        BookEntity result = bookRepository.findById(id)
+                    .orElseThrow(() -> new NullPointerException("수정할 대상이 없습니다."));
+        result.updatebook(book);
+        return bookRepository.save(result);
+
+
+    }
+    @Transactional
+    public void deleteBook(Long id){
+        bookRepository.deleteById(id);
+    }
+
 }
+

@@ -30,7 +30,12 @@ public class Book {
     public BookEntity toEntity(){
         return new BookEntity(title,price,author,publisher);
     }
-
+//    public void bookprint(Book book){
+//        System.out.println("title : "+ book.getTitle());
+//        System.out.println("author : "+book.getAuthor());
+//        System.out.println("price : "+book.getPrice());
+//        System.out.println("publisher : "+book.getPublisher());
+//    }
 
     //    Timestamp r_time;
 //    Timestamp m_time;

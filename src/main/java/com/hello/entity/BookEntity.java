@@ -1,8 +1,6 @@
 package com.hello.entity;
 
 import com.hello.dto.Book;
-import lombok.Getter;
-
 import javax.persistence.*;
 
 @Entity
@@ -31,7 +29,12 @@ public class BookEntity {
         return new Book(title,price,author,publisher);
 
     }
-
+    public void updatebook(Book book){
+        this.title=book.getTitle();
+        this.price=book.getPrice();
+        this.author=book.getAuthor();
+        this.publisher= book.getPublisher();
+    }
     public BookEntity() {
     }
 
