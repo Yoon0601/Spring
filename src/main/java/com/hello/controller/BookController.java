@@ -1,11 +1,16 @@
 package com.hello.controller;
 
 import com.hello.dto.Book;
+import com.hello.dto.ResponseDTO;
 import com.hello.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
+
+import java.nio.charset.Charset;
 
 @RestController
 public class BookController {
@@ -36,18 +41,31 @@ public class BookController {
      */
     @PutMapping("/book")
     @ResponseStatus(HttpStatus.CREATED)
-    public String createBook(@RequestBody Book book) {
+    public Book createBook(@RequestBody Book book) {
         bookService.createBook(book);
-        return "/book";
+        return book;
     }
 
     /**
-     *GET 메소드로 DB에 있는 기본키로 조회해 정보를 받아옴
+     * GET 메소드로 DB에 있는 기본키로 조회해 정보를 받아옴
      */
     @GetMapping("/book/{pk}")
-    @ResponseStatus(HttpStatus.OK)
-    public String getBook(@PathVariable Long pk){
-        return "책 정보는 "+bookService.getBook(pk);
+    public ResponseEntity<ResponseDTO> getBook(@PathVariable Long pk) {
+        ResponseDTO responseDTO = new ResponseDTO();
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+        try {
+            Book book = bookService.getBook(pk);
+            responseDTO.setStatusCode(ResponseDTO.StatusEnum.OK);
+            responseDTO.setMessage("성공");
+            responseDTO.setData(book);
+            return new ResponseEntity<>(responseDTO, headers, HttpStatus.OK);
+        } catch (NullPointerException e) {
+            responseDTO.setStatusCode((ResponseDTO.StatusEnum.NOT_FOUND));
+            responseDTO.setMessage("id 값 찾기 실패");
+            responseDTO.setData(e.getMessage());
+            return new ResponseEntity<>(responseDTO, headers, HttpStatus.NOT_FOUND);
+        }
     }
 
     /**
@@ -55,9 +73,9 @@ public class BookController {
      */
     @PutMapping("/book/{pk}")
     @ResponseStatus(HttpStatus.OK)
-    public String updateBook(@PathVariable Long pk,@RequestBody Book book){
+    public Book updateBook(@PathVariable Long pk,@RequestBody Book book){
         bookService.updateBook(book,pk);
-        return "책 정보가 변경 되었습니다. "+ book;
+        return book;
     }
 
     /**
@@ -65,9 +83,8 @@ public class BookController {
      */
     @DeleteMapping("/book/{pk}")
     @ResponseStatus(HttpStatus.OK)
-    public String deleteBook(@PathVariable Long pk){
+    public void deleteBook(@PathVariable Long pk){
         bookService.deleteBook(pk);
-        return "id가 "+pk+"인 책 정보가 삭제 되었습니다.";
     }
 
 }

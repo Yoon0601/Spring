@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>BOOK UPDATE</title>
+</head>
+<body>
+<h1><a href="http://localhost:8080">BOOK</a></h1>
+<script src="updateBook.js"></script>
+<h2><a href="updatebook.html">책 변경</a></h2>
+
+<p>id : <input type="text" name="pk" id="u_id"></p>
+<p>제목 : <input type="text" name="title" id="u_title"></p>
+<p>저자 : <input type="text" name="author" id="u_author"></p>
+<p>가격 : <input type="text" name="price" id="u_price"></p>
+<p>출판사 : <input type="text" name="publisher" id="u_publisher"></p>
+<p>
+  <button onclick="updateBook()">변경하기</button>
+</p>
+제목 : <span id="result1"></span><br>
+저자 : <span id="result2"></span><br>
+가격 : <span id="result3"></span><br>
+출판사 : <span id="result4"></span><br>
+</body>
+</html>

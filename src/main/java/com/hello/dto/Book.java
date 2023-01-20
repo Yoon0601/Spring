@@ -36,8 +36,8 @@ public class Book {
 //        System.out.println("price : "+book.getPrice());
 //        System.out.println("publisher : "+book.getPublisher());
 //    }
-
-    //    Timestamp r_time;
+//
+//    Timestamp r_time;
 //    Timestamp m_time;
 }
 
